@@ -1,6 +1,8 @@
 from flask import Flask, request, abort, render_template, session, redirect, url_for, jsonify
 import secrets
 import random
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -8,6 +10,7 @@ from email.mime.multipart import MIMEMultipart
 # made for education purposes only
 
 app = Flask(__name__)
+limiter = Limiter(get_remote_address, app=app, default_limits=["6 per day", "6 per hour"])
 secret_keyx = secrets.token_urlsafe(24)
 app.secret_key = secret_keyx
 
@@ -74,7 +77,7 @@ bot_user_agents = [
 "crawler"
 ]
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/m', methods=['GET', 'POST'])
 def captcha():
 
     if request.method == 'GET':
